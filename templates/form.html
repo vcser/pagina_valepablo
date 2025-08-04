@@ -1,16 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Formulario</title>
+    <title>Formulario de Invitados</title>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 <body>
-    <h2>Completa el formulario</h2>
-    <form method="POST" action="/form">
-        <label for="name">Nombre:</label><br>
-        <input type="text" id="name" name="name"><br>
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email"><br><br>
-        <input type="submit" value="Enviar">
+    <h2>Confirma tu asistencia y la de tus acompañantes</h2>
+    
+    <form method="POST" action="/form" x-data="{ guests: [{}] }">
+        <template x-for="(guest, index) in guests" :key="index">
+            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
+                <h3>Invitado #<span x-text="index + 1"></span></h3>
+                
+                <label :for="'fullname_' + index">Nombre completo:</label><br>
+                <input type="text" :id="'fullname_' + index" :name="'guests[' + index + '][fullname]'"><br>
+
+                <label :for="'email_' + index">Email:</label><br>
+                <input type="email" :id="'email_' + index" :name="'guests[' + index + '][email]'"><br>
+
+                <label :for="'phone_' + index">Teléfono:</label><br>
+                <input type="text" :id="'phone_' + index" :name="'guests[' + index + '][phone]'"><br>
+
+                <label>
+                    <input type="checkbox" :name="'guests[' + index + '][isAdult]'" value="si"> Es adulto
+                </label><br><br>
+
+                <label :for="'allergies_' + index">¿Alguna alergia alimentaria?</label><br>
+                <input type="text" :id="'allergies_' + index" :name="'guests[' + index + '][allergies]'"><br>
+
+                <label :for="'song_' + index">Sugerencia de canción (opcional):</label><br>
+                <input type="text" :id="'song_' + index" :name="'guests[' + index + '][song]'"><br><br>
+
+                <button type="button" @click="guests.splice(index, 1)" x-show="guests.length > 1">Eliminar invitado</button>
+            </div>
+        </template>
+
+        <button type="button" @click="guests.push({})" style="margin-top: 10px;">Agregar otro invitado</button><br><br>
+
+        <button type="submit">Enviar confirmación</button>
     </form>
 </body>
 </html>

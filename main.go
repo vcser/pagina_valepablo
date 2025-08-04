@@ -15,10 +15,7 @@ type User struct {
 	Password string
 }
 
-// Mutex para evitar que varios goroutines escriban en el archivo al mismo tiempo.
 var mu sync.Mutex
-
-// "Base de datos" en memoria para el login, se carga desde el CSV.
 var users = make(map[string]User)
 
 // loadUsers carga los usuarios desde el archivo CSV.
@@ -28,7 +25,6 @@ func loadUsers() {
 
 	file, err := os.Open("users.csv")
 	if err != nil {
-		// Si el archivo no existe, lo creamos.
 		if os.IsNotExist(err) {
 			return
 		}
@@ -72,8 +68,8 @@ func saveNewUser(user User) {
 	}
 }
 
-// saveFormData guarda los datos del formulario en el archivo CSV de respuestas.
-func saveFormData(name, email string) {
+// saveGuestData guarda los datos de cada invitado en el archivo CSV de respuestas.
+func saveGuestData(guests [][]string) {
 	mu.Lock()
 	defer mu.Unlock()
 
@@ -87,29 +83,28 @@ func saveFormData(name, email string) {
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
-	err = writer.Write([]string{name, email})
+	// Escribimos cada invitado como una nueva fila.
+	writer.WriteAll(guests)
 	if err != nil {
 		fmt.Printf("Error al escribir en responses.csv: %v\n", err)
 	}
 }
 
-// Manejador para la página de inicio (login/registro).
+// ... Los manejadores de `login`, `confirmation`, `text` y `success` son los mismos ...
+
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		username := r.FormValue("username")
 		password := r.FormValue("password")
 
 		if _, ok := users[username]; !ok {
-			// Si el usuario no existe, lo registramos y guardamos en el CSV.
 			newUser := User{Username: username, Password: password}
 			users[username] = newUser
 			saveNewUser(newUser)
-			fmt.Printf("Nuevo usuario registrado: %s\n", username)
 			http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
 			return
 		}
 
-		// Si existe, validamos la contraseña.
 		if users[username].Password == password {
 			http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
 			return
@@ -123,41 +118,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, nil)
 }
 
-// ... (El resto de los manejadores, confirmationHandler, textHandler, confirmationHandler, formHandler, successHandler, permanecen iguales, excepto formHandler)
-
-// Manejador para la página del formulario (cuando la respuesta fue "si").
-func formHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
-		name := r.FormValue("name")
-		email := r.FormValue("email")
-
-		// Guardamos los datos del formulario en el archivo CSV de respuestas.
-		saveFormData(name, email)
-
-		http.Redirect(w, r, "/success", http.StatusSeeOther)
-		return
-	}
-
-	tmpl, _ := template.ParseFiles("templates/form.html")
-	tmpl.Execute(w, nil)
-}
-
-func main() {
-	// Cargamos los usuarios existentes al inicio de la aplicación.
-	loadUsers()
-
-	// Definimos las rutas.
-	http.HandleFunc("/", loginHandler)
-	http.HandleFunc("/confirmation", confirmationHandler)
-	http.HandleFunc("/text", textHandler)
-	http.HandleFunc("/form", formHandler)
-	http.HandleFunc("/success", successHandler)
-
-	fmt.Println("Servidor iniciado en http://localhost:8080")
-	http.ListenAndServe(":8080", nil)
-}
-
-// ... (Funciones auxiliares como confirmationHandler, textHandler, successHandler)
 func confirmationHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		if r.FormValue("confirm") == "si" {
@@ -177,7 +137,61 @@ func textHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, "Has seleccionado 'No'. ¡Gracias por tu visita!")
 }
 
+// Manejador para el formulario (con múltiples invitados).
+func formHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		// Procesamos el formulario con múltiples invitados.
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, "Error al procesar el formulario", http.StatusBadRequest)
+			return
+		}
+
+		var guests [][]string
+
+		// El formulario tiene campos como 'guests[0][fullname]', 'guests[1][fullname]', etc.
+		// Iteramos sobre los índices para obtener cada invitado.
+		for i := 0; ; i++ {
+			fullname := r.FormValue(fmt.Sprintf("guests[%d][fullname]", i))
+			email := r.FormValue(fmt.Sprintf("guests[%d][email]", i))
+			phone := r.FormValue(fmt.Sprintf("guests[%d][phone]", i))
+			isAdult := r.FormValue(fmt.Sprintf("guests[%d][isAdult]", i))
+			allergies := r.FormValue(fmt.Sprintf("guests[%d][allergies]", i))
+			song := r.FormValue(fmt.Sprintf("guests[%d][song]", i))
+
+			// Si el nombre está vacío, significa que hemos llegado al final de los invitados.
+			if fullname == "" {
+				break
+			}
+
+			// Agregamos los datos del invitado al slice.
+			guests = append(guests, []string{fullname, email, phone, isAdult, allergies, song})
+		}
+
+		// Guardamos todos los invitados en el archivo CSV.
+		saveGuestData(guests)
+
+		http.Redirect(w, r, "/success", http.StatusSeeOther)
+		return
+	}
+
+	tmpl, _ := template.ParseFiles("templates/form.html")
+	tmpl.Execute(w, nil)
+}
+
 func successHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl, _ := template.ParseFiles("templates/success.html")
 	tmpl.Execute(w, "¡Formulario enviado con éxito!")
+}
+
+func main() {
+	loadUsers()
+
+	http.HandleFunc("/", loginHandler)
+	http.HandleFunc("/confirmation", confirmationHandler)
+	http.HandleFunc("/text", textHandler)
+	http.HandleFunc("/form", formHandler)
+	http.HandleFunc("/success", successHandler)
+
+	fmt.Println("Servidor iniciado en http://localhost:8080")
+	http.ListenAndServe(":8080", nil)
 }
