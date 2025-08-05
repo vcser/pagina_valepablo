@@ -1,10 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Éxito</title>
+    <title>Gracias!</title>
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        .tab { padding: 10px 20px; cursor: pointer; border: 1px solid #ccc; display: inline-block; }
+        .active { background: #eee; }
+        .tab-content { margin-top: 20px; }
+    </style>
 </head>
-<body>
-    <h2>Éxito</h2>
-    <p>{{.}}</p>
+<body x-data="{ tab: 1 }">
+    <p>Muchas gracias por llenar el formulario!</p>
+    <p>Nos sera muy util para organizar el evento</p>
+
+    <div>
+        <span class="tab" :class="{ 'active': tab === 1 }" @click="tab = 1">Opciones de hospedaje</span>
+        <span class="tab" :class="{ 'active': tab === 2 }" @click="tab = 2">Opciones de regalos</span>
+        <span class="tab" :class="{ 'active': tab === 3 }" @click="tab = 3">Dejar un mensaje</span>
+    </div>
+
+    <div class="tab-content" x-show="tab === 1">
+        {{template "hospedaje.html"}}
+    </div>
+    <div class="tab-content" x-show="tab === 2">
+        {{template "regalo.html"}}
+    </div>
+    <div class="tab-content" x-show="tab === 3">
+        {{template "mensaje.html"}}
+    </div>
 </body>
 </html>

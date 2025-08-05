@@ -90,6 +90,15 @@ func saveGuestData(guests [][]string) {
 	}
 }
 
+func isLoggedIn(r *http.Request) bool {
+	cookie, err := r.Cookie("session")
+	if err != nil || cookie.Value == "" {
+		return false
+	}
+	_, exists := users[cookie.Value]
+	return exists
+}
+
 // ... Los manejadores de `login`, `confirmation`, `text` y `success` son los mismos ...
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -106,6 +115,13 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if users[username].Password == password {
+			// Guardar cookie de sesión
+			http.SetCookie(w, &http.Cookie{
+				Name:  "session",
+				Value: username,
+				Path:  "/",
+				// Opcional: Secure, HttpOnly, Expires, etc.
+			})
 			http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
 			return
 		}
@@ -119,6 +135,11 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func confirmationHandler(w http.ResponseWriter, r *http.Request) {
+	if !isLoggedIn(r) {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
 	if r.Method == http.MethodPost {
 		if r.FormValue("confirm") == "si" {
 			http.Redirect(w, r, "/form", http.StatusSeeOther)
@@ -133,8 +154,13 @@ func confirmationHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func textHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, _ := template.ParseFiles("templates/text.html")
-	tmpl.Execute(w, "Has seleccionado 'No'. ¡Gracias por tu visita!")
+	if !isLoggedIn(r) {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	tmpl := template.Must(template.ParseGlob("templates/*.html"))
+	tmpl.ExecuteTemplate(w, "text.html", nil)
 }
 
 // Manejador para el formulario (con múltiples invitados).
@@ -179,8 +205,13 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func successHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, _ := template.ParseFiles("templates/success.html")
-	tmpl.Execute(w, "¡Formulario enviado con éxito!")
+	if !isLoggedIn(r) {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	tmpl := template.Must(template.ParseGlob("templates/*.html"))
+	tmpl.ExecuteTemplate(w, "success.html", nil)
 }
 
 func main() {

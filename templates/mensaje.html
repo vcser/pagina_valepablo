@@ -1,0 +1,11 @@
+{{define "mensaje.html"}}
+<div>
+    <h2>Mensaje</h2>
+    <p>Puedes dejarnos un mensaje con buenos deseos:</p>
+    <form method="POST" action="/regalo">
+        <textarea name="message" rows="4" cols="50" placeholder="Escribe tu mensaje aquí..."></textarea><br>
+        <button type="submit">Enviar mensaje</button>
+    </form>
+    <p>¡Muchas gracias!</p>
+</div>
+{{end}}
