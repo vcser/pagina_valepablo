@@ -8,36 +8,38 @@
 <body>
     <h2>Confirma tu asistencia y la de tus acompañantes</h2>
     
-    <form method="POST" action="/form" x-data="{ guests: [{}] }">
+    <form method="POST" action="/form" x-data="{
+        guests: [{}],
+        addGuest() { this.guests.push({}); },
+        removeGuest(i) { if (this.guests.length > 1) this.guests.splice(i, 1); }
+    }">
         <template x-for="(guest, index) in guests" :key="index">
             <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
                 <h3>Invitado #<span x-text="index + 1"></span></h3>
-                
                 <label :for="'fullname_' + index">Nombre completo:</label><br>
-                <input type="text" :id="'fullname_' + index" :name="'guests[' + index + '][fullname]'"><br>
+                <input type="text" :id="'fullname_' + index" :name="'guests[' + index + '][fullname]'" x-model="guest.fullname" required><br>
 
                 <label :for="'email_' + index">Email:</label><br>
-                <input type="email" :id="'email_' + index" :name="'guests[' + index + '][email]'"><br>
+                <input type="email" :id="'email_' + index" :name="'guests[' + index + '][email]'" x-model="guest.email"><br>
 
                 <label :for="'phone_' + index">Teléfono:</label><br>
-                <input type="text" :id="'phone_' + index" :name="'guests[' + index + '][phone]'"><br>
+                <input type="text" :id="'phone_' + index" :name="'guests[' + index + '][phone]'" x-model="guest.phone"><br>
 
                 <label>
-                    <input type="checkbox" :name="'guests[' + index + '][isAdult]'" value="si"> Es adulto
+                    <input type="checkbox" :name="'guests[' + index + '][isAdult]'" value="si" x-model="guest.isAdult"> Es adulto
                 </label><br><br>
 
                 <label :for="'allergies_' + index">¿Alguna alergia alimentaria?</label><br>
-                <input type="text" :id="'allergies_' + index" :name="'guests[' + index + '][allergies]'"><br>
+                <input type="text" :id="'allergies_' + index" :name="'guests[' + index + '][allergies]'" x-model="guest.allergies"><br>
 
                 <label :for="'song_' + index">Sugerencia de canción (opcional):</label><br>
-                <input type="text" :id="'song_' + index" :name="'guests[' + index + '][song]'"><br><br>
+                <input type="text" :id="'song_' + index" :name="'guests[' + index + '][song]'" x-model="guest.song"><br><br>
 
-                <button type="button" @click="guests.splice(index, 1)" x-show="guests.length > 1">Eliminar invitado</button>
+                <button type="button" @click="removeGuest(index)" x-show="guests.length > 1">Eliminar invitado</button>
             </div>
         </template>
-
-        <button type="button" @click="guests.push({})" style="margin-top: 10px;">Agregar otro invitado</button><br><br>
-
+        <button type="button" @click="addGuest()" style="margin-top: 10px;">Agregar otro invitado</button>
+        <br><br>
         <button type="submit">Enviar confirmación</button>
     </form>
 </body>

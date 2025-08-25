@@ -313,26 +313,23 @@ func textHandler(w http.ResponseWriter, r *http.Request) {
 
 // Manejador para el formulario (con múltiples invitados).
 func formHandler(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("session")
+	var username string
+	if err == nil && cookie.Value != "" {
+		username = cookie.Value
+	} else {
+		username = ""
+	}
+
+	// Eliminar modo edición: solo permitir agregar invitados nuevos
+
 	if r.Method == http.MethodPost {
-		// Procesamos el formulario con múltiples invitados.
 		if err := r.ParseForm(); err != nil {
 			http.Error(w, "Error al procesar el formulario", http.StatusBadRequest)
 			return
 		}
 
-		// Obtener el usuario de la cookie de sesión
-		cookie, err := r.Cookie("session")
-		var username string
-		if err == nil && cookie.Value != "" {
-			username = cookie.Value
-		} else {
-			username = "" // O manejar error si es necesario
-		}
-
 		var guests [][]string
-
-		// El formulario tiene campos como 'guests[0][fullname]', 'guests[1][fullname]', etc.
-		// Iteramos sobre los índices para obtener cada invitado.
 		for i := 0; ; i++ {
 			fullname := r.FormValue(fmt.Sprintf("guests[%d][fullname]", i))
 			email := r.FormValue(fmt.Sprintf("guests[%d][email]", i))
@@ -340,25 +337,19 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 			isAdult := r.FormValue(fmt.Sprintf("guests[%d][isAdult]", i))
 			allergies := r.FormValue(fmt.Sprintf("guests[%d][allergies]", i))
 			song := r.FormValue(fmt.Sprintf("guests[%d][song]", i))
-
-			// Si el nombre está vacío, significa que hemos llegado al final de los invitados.
 			if fullname == "" {
 				break
 			}
-
-			// Agregamos los datos del invitado al slice, anteponiendo el username
 			guests = append(guests, []string{username, fullname, email, phone, isAdult, allergies, song})
 		}
-
-		// Guardamos todos los invitados en el archivo CSV.
 		saveGuestData(guests)
-
 		http.Redirect(w, r, "/success", http.StatusSeeOther)
 		return
 	}
 
+	// GET: no cargar invitados ni modo edición, solo renderizar formulario vacío
 	tmpl, _ := template.ParseFiles("templates/form.html")
-	tmpl.Execute(w, nil)
+	tmpl.Execute(w, map[string]interface{}{})
 }
 
 func successHandler(w http.ResponseWriter, r *http.Request) {
