@@ -10,9 +10,40 @@
         .tab-content { margin-top: 20px; }
     </style>
 </head>
-<body x-data="{ tab: 1 }">
+<body x-data="{ tab: parseInt('{{.Tab}}') || 1 }">
+
     <p>Muchas gracias por llenar el formulario!</p>
     <p>Nos sera muy util para organizar el evento</p>
+
+    <h3>Invitados registrados:</h3>
+    {{if .Guests}}
+    <table border="1" cellpadding="5" style="margin-bottom:20px;">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Adulto</th>
+                <th>Alergias</th>
+                <th>Canción</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{range .Guests}}
+            <tr>
+                <td>{{index . 0}}</td>
+                <td>{{index . 1}}</td>
+                <td>{{index . 2}}</td>
+                <td>{{index . 3}}</td>
+                <td>{{index . 4}}</td>
+                <td>{{index . 5}}</td>
+            </tr>
+        {{end}}
+        </tbody>
+    </table>
+    {{else}}
+    <p>No hay invitados registrados aún.</p>
+    {{end}}
 
     <div>
         <span class="tab" :class="{ 'active': tab === 1 }" @click="tab = 1">Opciones de hospedaje</span>
@@ -27,7 +58,12 @@
         {{template "regalo.html"}}
     </div>
     <div class="tab-content" x-show="tab === 3">
-        {{template "mensaje.html"}}
+        {{template "mensaje.html" .}}
+    </div>
+    <div style="margin-top: 30px;">
+        <form action="/" method="get">
+            <button type="submit" style="padding: 8px 20px; font-size: 16px;">Volver al login</button>
+        </form>
     </div>
 </body>
 </html>

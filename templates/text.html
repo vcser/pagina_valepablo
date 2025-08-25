@@ -6,6 +6,11 @@
 <body>
     <h2>Nos apena que no puedas asistir. Si quieres, puedes dejarnos un mensaje de buenos deseos o un regalito.</h2>
     {{template "regalo.html"}}
-    {{template "mensaje.html"}}
+    {{template "mensaje.html" .}}
+    <div style="margin-top: 30px;">
+        <form action="/" method="get">
+            <button type="submit" style="padding: 8px 20px; font-size: 16px;">Volver al login</button>
+        </form>
+    </div>
 </body>
 </html>

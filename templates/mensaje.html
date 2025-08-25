@@ -6,10 +6,15 @@
 <div>
     <h2>Mensaje</h2>
     <p>Puedes dejarnos un mensaje con buenos deseos:</p>
-    <form method="POST" action="/regalo">
-        <textarea name="message" rows="4" cols="50" placeholder="Escribe tu mensaje aquí..."></textarea><br>
-        <button type="submit">Enviar mensaje</button>
-    </form>
+    {{if .Message}}
+        <p><strong>Tu mensaje enviado:</strong></p>
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; background:#f9f9f9;">{{.Message}}</div>
+    {{else}}
+        <form method="POST" action="/text">
+            <textarea name="message" rows="4" cols="50" placeholder="Escribe tu mensaje aquí..."></textarea><br>
+            <button type="submit">Enviar mensaje</button>
+        </form>
+    {{end}}
     <p>¡Muchas gracias!</p>
 </div>
 {{end}}
