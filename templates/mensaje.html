@@ -1,14 +1,14 @@
 {{define "mensaje.html"}}
 <div class="max-w-xl mx-auto bg-white p-6 rounded shadow mb-4 flex flex-col items-center text-center">
-    <h2 class="text-xl text-green-700 font-bold mb-2">Mensaje</h2>
+    <h2 class="text-xl font-bold mb-2" style="color:#2B463C;">Mensaje</h2>
     <p class="mb-4">Puedes dejarnos un mensaje con buenos deseos:</p>
     {{if .Message}}
         <p class="font-semibold mb-2">Tu mensaje enviado:</p>
-    <div class="border border-green-300 p-4 mb-4 bg-green-100 rounded text-green-900">{{.Message}}</div>
+    <div class="border border-green-300 p-4 mb-4 rounded" style="background-color:#B1D182; color:#2B463C;">{{.Message}}</div>
     {{else}}
         <form method="POST" action="/text" class="flex flex-col items-center text-center w-full">
             <textarea name="message" rows="4" class="w-full border border-gray-300 rounded p-2 mb-2 text-center" placeholder="Escribe tu mensaje aquí..."></textarea>
-            <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800">Enviar mensaje</button>
+            <button type="submit" style="background-color:#688F4E; color:#fff; border-radius:0.375rem; padding:0.5rem 1rem;" onmouseover="this.style.backgroundColor='#4e6b36'" onmouseout="this.style.backgroundColor='#688F4E'">Enviar mensaje</button>
         </form>
     {{end}}
     <p class="mt-4">¡Muchas gracias!</p>

@@ -4,16 +4,16 @@
     <title>Confirmación</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-yellow-50 text-gray-800 font-sans">
+<body class="text-gray-800 font-sans" style="background-color: #f4f1e9;">
     <div class="container mx-auto px-4 py-8 flex flex-col items-center text-center">
-        <h2 class="text-3xl text-green-700 text-center mb-6 flex items-center justify-center">
+        <h2 class="text-3xl text-center mb-6 flex items-center justify-center" style="color:#2B463C;">
             <img src="/static/images/love-175627.svg" class="w-8 h-8 mr-2" alt="Icono">
             ¿Asistirás?
         </h2>
         <p class="text-lg text-center mb-8"><strong>Recordatorio:</strong> Nuestro matrimonio se celebrará el 8 de noviembre a las 17:00 horas en Chacahuín, Linares</p>
         <form method="POST" action="/confirmation" class="flex justify-center space-x-4 text-center">
-            <button type="submit" name="confirm" value="si" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Sí</button>
-            <button type="submit" name="confirm" value="no" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">No</button>
+            <button type="submit" name="confirm" value="si" style="background-color:#688F4E; color:#fff; border-radius:0.375rem; padding:0.5rem 1.5rem;" onmouseover="this.style.backgroundColor='#4e6b36'" onmouseout="this.style.backgroundColor='#688F4E'">Sí</button>
+            <button type="submit" name="confirm" value="no" style="background-color:#688F4E; color:#fff; border-radius:0.375rem; padding:0.5rem 1.5rem;" onmouseover="this.style.backgroundColor='#4e6b36'" onmouseout="this.style.backgroundColor='#688F4E'">No</button>
         </form>
     </div>
 </body>

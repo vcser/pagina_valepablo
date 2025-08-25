@@ -5,19 +5,19 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="bg-yellow-50 text-gray-800 font-sans" x-data="{ tab: parseInt('{{.Tab}}') || 1 }">
+<body class="text-gray-800 font-sans" style="background-color: #f4f1e9;" x-data="{ tab: parseInt('{{.Tab}}') || 1 }">
     <div class="container mx-auto px-4 py-8 flex flex-col items-center text-center">
-        <h2 class="text-3xl text-green-700 text-center mb-6 flex items-center justify-center">
+        <h2 class="text-3xl text-center mb-6 flex items-center justify-center" style="color:#2B463C;">
             <img src="/static/images/love-175627.svg" class="w-8 h-8 mr-2" alt="Icono">
             ¡Gracias!
         </h2>
         <p class="text-lg text-center mb-2">Muchas gracias por llenar el formulario!</p>
         <p class="text-center mb-6">Nos será muy útil para organizar el evento</p>
 
-        <h3 class="text-xl font-semibold mb-2">Invitados registrados:</h3>
+    <h3 class="text-xl font-semibold mb-2" style="color:#2B463C;">Invitados registrados:</h3>
         {{if .Guests}}
-    <table class="w-full max-w-3xl mx-auto mb-6 border border-gray-300 bg-yellow-50 text-center">
-            <thead class="bg-green-200 text-green-900">
+    <table class="w-full max-w-3xl mx-auto mb-6 border border-gray-300 text-center" style="background-color: #f4f1e9;">
+            <thead style="background-color:#B1D182; color:#2B463C;">
                 <tr>
                     <th class="px-2 py-1">Nombre</th>
                     <th class="px-2 py-1">Email</th>
@@ -45,9 +45,9 @@
         {{end}}
 
     <div class="flex justify-center space-x-2 mb-6 text-center">
-            <span class="tab px-4 py-2 border border-gray-300 rounded cursor-pointer bg-green-700 text-white" :class="{ 'bg-green-800 font-bold': tab === 1 }" @click="tab = 1">Opciones de hospedaje</span>
-            <span class="tab px-4 py-2 border border-gray-300 rounded cursor-pointer bg-green-700 text-white" :class="{ 'bg-green-800 font-bold': tab === 2 }" @click="tab = 2">Opciones de regalos</span>
-            <span class="tab px-4 py-2 border border-gray-300 rounded cursor-pointer bg-green-700 text-white" :class="{ 'bg-green-800 font-bold': tab === 3 }" @click="tab = 3">Dejar un mensaje</span>
+            <span class="tab px-4 py-2 border border-gray-300 rounded cursor-pointer" style="background-color:#688F4E; color:#fff;" :class="{ 'font-bold': tab === 1 }" @mouseover="$el.style.backgroundColor='#4e6b36'" @mouseout="if(tab!==1){$el.style.backgroundColor='#688F4E'}" @click="tab = 1">Opciones de hospedaje</span>
+            <span class="tab px-4 py-2 border border-gray-300 rounded cursor-pointer" style="background-color:#688F4E; color:#fff;" :class="{ 'font-bold': tab === 2 }" @mouseover="$el.style.backgroundColor='#4e6b36'" @mouseout="if(tab!==2){$el.style.backgroundColor='#688F4E'}" @click="tab = 2">Opciones de regalos</span>
+            <span class="tab px-4 py-2 border border-gray-300 rounded cursor-pointer" style="background-color:#688F4E; color:#fff;" :class="{ 'font-bold': tab === 3 }" @mouseover="$el.style.backgroundColor='#4e6b36'" @mouseout="if(tab!==3){$el.style.backgroundColor='#688F4E'}" @click="tab = 3">Dejar un mensaje</span>
         </div>
 
     <div class="tab-content text-center" x-show="tab === 1">
@@ -62,7 +62,7 @@
 
     <div class="mt-8 flex justify-center text-center">
             <form action="/" method="get">
-                <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Volver al login</button>
+                <button type="submit" style="background-color:#688F4E; color:#fff; border-radius:0.375rem; padding:0.5rem 1.5rem;" onmouseover="this.style.backgroundColor='#4e6b36'" onmouseout="this.style.backgroundColor='#688F4E'">Volver al login</button>
             </form>
         </div>
     </div>
