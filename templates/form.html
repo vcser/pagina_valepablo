@@ -2,45 +2,50 @@
 <html lang="es">
 <head>
     <title>Formulario de Invitados</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
-<body>
-    <h2>Confirma tu asistencia y la de tus acompañantes</h2>
+<body class="bg-yellow-50 text-gray-800 font-sans">
+    <div class="container mx-auto px-4 py-8 flex flex-col items-center">
+    <h2 class="text-3xl text-green-700 text-center mb-6 flex items-center justify-center">
+        <img src="/static/images/love-175627.svg" class="w-8 h-8 mr-2" alt="Icono">
+        Confirma tu asistencia y la de tus acompañantes
+    </h2>
     
     <form method="POST" action="/form" x-data="{
         guests: [{}],
         addGuest() { this.guests.push({}); },
         removeGuest(i) { if (this.guests.length > 1) this.guests.splice(i, 1); }
-    }">
+    }" class="max-w-2xl mx-auto bg-white p-6 rounded shadow flex flex-col items-center text-center">
         <template x-for="(guest, index) in guests" :key="index">
-            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
-                <h3>Invitado #<span x-text="index + 1"></span></h3>
-                <label :for="'fullname_' + index">Nombre completo:</label><br>
-                <input type="text" :id="'fullname_' + index" :name="'guests[' + index + '][fullname]'" x-model="guest.fullname" required><br>
+            <div class="border border-gray-300 p-4 mb-4 rounded bg-yellow-100 flex flex-col items-center text-center">
+                <h3 class="text-lg font-semibold mb-2">Invitado #<span x-text="index + 1"></span></h3>
+                <label :for="'fullname_' + index" class="block text-gray-700 mb-1">Nombre completo:</label>
+                <input type="text" :id="'fullname_' + index" :name="'guests[' + index + '][fullname]'" x-model="guest.fullname" required class="w-full px-3 py-2 border border-gray-300 rounded mb-2 text-center">
 
-                <label :for="'email_' + index">Email:</label><br>
-                <input type="email" :id="'email_' + index" :name="'guests[' + index + '][email]'" x-model="guest.email"><br>
+                <label :for="'email_' + index" class="block text-gray-700 mb-1">Email:</label>
+                <input type="email" :id="'email_' + index" :name="'guests[' + index + '][email]'" x-model="guest.email" class="w-full px-3 py-2 border border-gray-300 rounded mb-2 text-center">
 
-                <label :for="'phone_' + index">Teléfono:</label><br>
-                <input type="text" :id="'phone_' + index" :name="'guests[' + index + '][phone]'" x-model="guest.phone"><br>
+                <label :for="'phone_' + index" class="block text-gray-700 mb-1">Teléfono:</label>
+                <input type="text" :id="'phone_' + index" :name="'guests[' + index + '][phone]'" x-model="guest.phone" class="w-full px-3 py-2 border border-gray-300 rounded mb-2 text-center">
 
-                <label>
-                    <input type="checkbox" :name="'guests[' + index + '][isAdult]'" value="si" x-model="guest.isAdult"> Es adulto
-                </label><br><br>
+                <label class="block text-gray-700 mb-1">
+                    <input type="checkbox" :name="'guests[' + index + '][isAdult]'" value="si" x-model="guest.isAdult" class="mr-2"> Es adulto
+                </label>
 
-                <label :for="'allergies_' + index">¿Alguna alergia alimentaria?</label><br>
-                <input type="text" :id="'allergies_' + index" :name="'guests[' + index + '][allergies]'" x-model="guest.allergies"><br>
+                <label :for="'allergies_' + index" class="block text-gray-700 mb-1">¿Alguna alergia alimentaria?</label>
+                <input type="text" :id="'allergies_' + index" :name="'guests[' + index + '][allergies]'" x-model="guest.allergies" class="w-full px-3 py-2 border border-gray-300 rounded mb-2 text-center">
 
-                <label :for="'song_' + index">Sugerencia de canción (opcional):</label><br>
-                <input type="text" :id="'song_' + index" :name="'guests[' + index + '][song]'" x-model="guest.song"><br><br>
+                <label :for="'song_' + index" class="block text-gray-700 mb-1">Sugerencia de canción (opcional):</label>
+                <input type="text" :id="'song_' + index" :name="'guests[' + index + '][song]'" x-model="guest.song" class="w-full px-3 py-2 border border-gray-300 rounded mb-2 text-center">
 
-                <button type="button" @click="removeGuest(index)" x-show="guests.length > 1">Eliminar invitado</button>
+                <button type="button" @click="removeGuest(index)" x-show="guests.length > 1" class="bg-green-700 text-white px-3 py-1 rounded hover:bg-green-800 mt-2">Eliminar invitado</button>
             </div>
         </template>
-        <button type="button" @click="addGuest()" style="margin-top: 10px;">Agregar otro invitado</button>
+    <button type="button" @click="addGuest()" class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 mt-2">Agregar otro invitado</button>
         <br><br>
-        <button type="submit">Enviar confirmación</button>
+        <button type="submit" class="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800">Enviar confirmación</button>
     </form>
+    </div>
 </body>
 </html>

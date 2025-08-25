@@ -2,68 +2,69 @@
 <html>
 <head>
     <title>Gracias!</title>
-    <!-- Alpine.js CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <style>
-        .tab { padding: 10px 20px; cursor: pointer; border: 1px solid #ccc; display: inline-block; }
-        .active { background: #eee; }
-        .tab-content { margin-top: 20px; }
-    </style>
 </head>
-<body x-data="{ tab: parseInt('{{.Tab}}') || 1 }">
+<body class="bg-yellow-50 text-gray-800 font-sans" x-data="{ tab: parseInt('{{.Tab}}') || 1 }">
+    <div class="container mx-auto px-4 py-8 flex flex-col items-center text-center">
+        <h2 class="text-3xl text-green-700 text-center mb-6 flex items-center justify-center">
+            <img src="/static/images/love-175627.svg" class="w-8 h-8 mr-2" alt="Icono">
+            ¡Gracias!
+        </h2>
+        <p class="text-lg text-center mb-2">Muchas gracias por llenar el formulario!</p>
+        <p class="text-center mb-6">Nos será muy útil para organizar el evento</p>
 
-    <p>Muchas gracias por llenar el formulario!</p>
-    <p>Nos sera muy util para organizar el evento</p>
-
-    <h3>Invitados registrados:</h3>
-    {{if .Guests}}
-    <table border="1" cellpadding="5" style="margin-bottom:20px;">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Teléfono</th>
-                <th>Adulto</th>
-                <th>Alergias</th>
-                <th>Canción</th>
-            </tr>
-        </thead>
-        <tbody>
-        {{range .Guests}}
-            <tr>
-                <td>{{index . 0}}</td>
-                <td>{{index . 1}}</td>
-                <td>{{index . 2}}</td>
-                <td>{{index . 3}}</td>
-                <td>{{index . 4}}</td>
-                <td>{{index . 5}}</td>
-            </tr>
+        <h3 class="text-xl font-semibold mb-2">Invitados registrados:</h3>
+        {{if .Guests}}
+    <table class="w-full max-w-3xl mx-auto mb-6 border border-gray-300 bg-yellow-50 text-center">
+            <thead class="bg-green-200 text-green-900">
+                <tr>
+                    <th class="px-2 py-1">Nombre</th>
+                    <th class="px-2 py-1">Email</th>
+                    <th class="px-2 py-1">Teléfono</th>
+                    <th class="px-2 py-1">Adulto</th>
+                    <th class="px-2 py-1">Alergias</th>
+                    <th class="px-2 py-1">Canción</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{range .Guests}}
+                <tr class="border-t">
+                    <td class="px-2 py-1 text-green-900">{{index . 0}}</td>
+                    <td class="px-2 py-1">{{index . 1}}</td>
+                    <td class="px-2 py-1">{{index . 2}}</td>
+                    <td class="px-2 py-1">{{index . 3}}</td>
+                    <td class="px-2 py-1">{{index . 4}}</td>
+                    <td class="px-2 py-1">{{index . 5}}</td>
+                </tr>
+            {{end}}
+            </tbody>
+        </table>
+        {{else}}
+        <p class="mb-6">No hay invitados registrados aún.</p>
         {{end}}
-        </tbody>
-    </table>
-    {{else}}
-    <p>No hay invitados registrados aún.</p>
-    {{end}}
 
-    <div>
-        <span class="tab" :class="{ 'active': tab === 1 }" @click="tab = 1">Opciones de hospedaje</span>
-        <span class="tab" :class="{ 'active': tab === 2 }" @click="tab = 2">Opciones de regalos</span>
-        <span class="tab" :class="{ 'active': tab === 3 }" @click="tab = 3">Dejar un mensaje</span>
-    </div>
+    <div class="flex justify-center space-x-2 mb-6 text-center">
+            <span class="tab px-4 py-2 border border-gray-300 rounded cursor-pointer bg-green-700 text-white" :class="{ 'bg-green-800 font-bold': tab === 1 }" @click="tab = 1">Opciones de hospedaje</span>
+            <span class="tab px-4 py-2 border border-gray-300 rounded cursor-pointer bg-green-700 text-white" :class="{ 'bg-green-800 font-bold': tab === 2 }" @click="tab = 2">Opciones de regalos</span>
+            <span class="tab px-4 py-2 border border-gray-300 rounded cursor-pointer bg-green-700 text-white" :class="{ 'bg-green-800 font-bold': tab === 3 }" @click="tab = 3">Dejar un mensaje</span>
+        </div>
 
-    <div class="tab-content" x-show="tab === 1">
-        {{template "hospedaje.html"}}
-    </div>
-    <div class="tab-content" x-show="tab === 2">
-        {{template "regalo.html"}}
-    </div>
-    <div class="tab-content" x-show="tab === 3">
-        {{template "mensaje.html" .}}
-    </div>
-    <div style="margin-top: 30px;">
-        <form action="/" method="get">
-            <button type="submit" style="padding: 8px 20px; font-size: 16px;">Volver al login</button>
-        </form>
+    <div class="tab-content text-center" x-show="tab === 1">
+            {{template "hospedaje.html"}}
+        </div>
+    <div class="tab-content text-center" x-show="tab === 2">
+            {{template "regalo.html"}}
+        </div>
+    <div class="tab-content text-center" x-show="tab === 3">
+            {{template "mensaje.html" .}}
+        </div>
+
+    <div class="mt-8 flex justify-center text-center">
+            <form action="/" method="get">
+                <button type="submit" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Volver al login</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

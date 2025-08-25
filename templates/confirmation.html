@@ -3,15 +3,17 @@
 <head>
     <title>Confirmación</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
 </head>
 <body class="bg-yellow-50 text-gray-800 font-sans">
-    <div class="container mx-auto px-4 py-8">
-        <h2 class="text-3xl font-bold mb-4">¿Asistirás?</h2>
-        <p class="text-lg mb-8"><strong>Recordatorio:</strong> Nuestro matrimonio se celebrará el 8 de noviembre a las 17:00 horas en Chacahuín, Linares</p>
-        <form method="POST" action="/confirmation" class="space-x-4">
-            <button type="submit" name="confirm" value="si" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Sí</button>
-            <button type="submit" name="confirm" value="no" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">No</button>
+    <div class="container mx-auto px-4 py-8 flex flex-col items-center text-center">
+        <h2 class="text-3xl text-green-700 text-center mb-6 flex items-center justify-center">
+            <img src="/static/images/love-175627.svg" class="w-8 h-8 mr-2" alt="Icono">
+            ¿Asistirás?
+        </h2>
+        <p class="text-lg text-center mb-8"><strong>Recordatorio:</strong> Nuestro matrimonio se celebrará el 8 de noviembre a las 17:00 horas en Chacahuín, Linares</p>
+        <form method="POST" action="/confirmation" class="flex justify-center space-x-4 text-center">
+            <button type="submit" name="confirm" value="si" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Sí</button>
+            <button type="submit" name="confirm" value="no" class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">No</button>
         </form>
     </div>
 </body>

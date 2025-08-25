@@ -1,20 +1,16 @@
 {{define "mensaje.html"}}
-<head>
-    <title>...existing title...</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
-</head>
-<div>
-    <h2>Mensaje</h2>
-    <p>Puedes dejarnos un mensaje con buenos deseos:</p>
+<div class="max-w-xl mx-auto bg-white p-6 rounded shadow mb-4 flex flex-col items-center text-center">
+    <h2 class="text-xl text-green-700 font-bold mb-2">Mensaje</h2>
+    <p class="mb-4">Puedes dejarnos un mensaje con buenos deseos:</p>
     {{if .Message}}
-        <p><strong>Tu mensaje enviado:</strong></p>
-        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; background:#f9f9f9;">{{.Message}}</div>
+        <p class="font-semibold mb-2">Tu mensaje enviado:</p>
+    <div class="border border-green-300 p-4 mb-4 bg-green-100 rounded text-green-900">{{.Message}}</div>
     {{else}}
-        <form method="POST" action="/text">
-            <textarea name="message" rows="4" cols="50" placeholder="Escribe tu mensaje aquí..."></textarea><br>
-            <button type="submit">Enviar mensaje</button>
+        <form method="POST" action="/text" class="flex flex-col items-center text-center w-full">
+            <textarea name="message" rows="4" class="w-full border border-gray-300 rounded p-2 mb-2 text-center" placeholder="Escribe tu mensaje aquí..."></textarea>
+            <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800">Enviar mensaje</button>
         </form>
     {{end}}
-    <p>¡Muchas gracias!</p>
+    <p class="mt-4">¡Muchas gracias!</p>
 </div>
 {{end}}
