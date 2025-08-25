@@ -84,8 +84,7 @@ func saveGuestData(guests [][]string) {
 	defer writer.Flush()
 
 	// Escribimos cada invitado como una nueva fila.
-	writer.WriteAll(guests)
-	if err != nil {
+	if err := writer.WriteAll(guests); err != nil {
 		fmt.Printf("Error al escribir en responses.csv: %v\n", err)
 	}
 }
