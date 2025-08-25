@@ -409,6 +409,9 @@ func successHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	loadUsers()
 
+	// Servir archivos estáticos (imágenes, CSS, etc.)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+
 	http.HandleFunc("/", loginHandler)
 	http.HandleFunc("/confirmation", confirmationHandler)
 	http.HandleFunc("/text", textHandler)
