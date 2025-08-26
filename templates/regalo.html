@@ -1,10 +1,10 @@
-{{define "regalo.html"}}
 <style>
 @font-face {
     font-family: 'Hobbiton';
     src: url('/static/hobbiton.ttf') format('truetype');
     font-display: swap;
 }
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 @font-face {
     font-family: 'Chomsky';
     src: url('/static/Chomsky.otf') format('opentype');
@@ -15,8 +15,11 @@ h1, h2, h3, h4, h5, h6 {
     letter-spacing: 0.5px;
 }
 body, .font-sans, .text-gray-800, p, td, label, input, button, span, div, li, ul, table {
-    font-family: 'Chomsky', Arial, sans-serif !important;
+    font-family: 'Roboto', Arial, sans-serif !important;
     font-weight: normal;
+}
+body {
+    background: url('/static/images/hand-drawn-art-nouveau-frame-borders-ornament-collection.png') center center/cover no-repeat fixed, #f4f1e9 !important;
 }
 </style>
 <div class="max-w-xl mx-auto bg-white p-6 rounded shadow mb-4 flex flex-col items-center text-center">
@@ -33,4 +36,7 @@ body, .font-sans, .text-gray-800, p, td, label, input, button, span, div, li, ul
         <li>Sofia Bravo - Teléfono: +56 9 3927 2399 (vía whatsapp)</li>
     </ul>
 </div>
-{{end}}
+<img src="/static/images/abajoizq.png" style="position:fixed; left:0; bottom:0; width:120px; height:auto; z-index:50; pointer-events:none;" alt="Decoración esquina inferior izquierda">
+<img src="/static/images/abajoder.png" style="position:fixed; right:0; bottom:0; width:120px; height:auto; z-index:50; pointer-events:none;" alt="Decoración esquina inferior derecha">
+<img src="/static/images/arribaizq.png" style="position:fixed; left:0; top:0; width:120px; height:auto; z-index:50; pointer-events:none;" alt="Decoración esquina superior izquierda">
+<img src="/static/images/arribader.png" style="position:fixed; right:0; top:0; width:120px; height:auto; z-index:50; pointer-events:none;" alt="Decoración esquina superior derecha">
