@@ -219,10 +219,15 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		password := r.FormValue("password")
 
 		if _, ok := users[username]; !ok {
-			// Usuario nuevo: crear y redirigir a /confirmation
+			// Usuario nuevo: crear, guardar cookie y redirigir a /confirmation
 			newUser := User{Username: username, Password: password}
 			users[username] = newUser
 			saveNewUser(newUser)
+			http.SetCookie(w, &http.Cookie{
+				Name:  "session",
+				Value: username,
+				Path:  "/",
+			})
 			http.Redirect(w, r, "/confirmation", http.StatusSeeOther)
 			return
 		}

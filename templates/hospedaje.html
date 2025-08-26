@@ -1,4 +1,24 @@
 {{define "hospedaje.html"}}
+<style>
+@font-face {
+    font-family: 'Hobbiton';
+    src: url('/static/hobbiton.ttf') format('truetype');
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Chomsky';
+    src: url('/static/Chomsky.otf') format('opentype');
+    font-display: swap;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Hobbiton', serif !important;
+    letter-spacing: 0.5px;
+}
+body, .font-sans, .text-gray-800, p, td, label, input, button, span, div, li, ul, table {
+    font-family: 'Chomsky', Arial, sans-serif !important;
+    font-weight: normal;
+}
+</style>
 <div class="max-w-xl mx-auto bg-white p-6 rounded shadow mb-4 flex flex-col items-center text-center">
     <h2 class="text-xl font-bold mb-2" style="color:#2B463C;">Opciones de hospedaje</h2>
     <p>Te dejamos una lista de alternativas para que puedas quedarte en Linares, Longaví o alrededores</p>
