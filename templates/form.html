@@ -20,7 +20,7 @@
         letter-spacing: 0.5px;
     }
     body, .font-sans, .text-gray-800, p, td, label, input, button, span, div, li, ul, table {
-        font-family: 'Chomsky', Arial, sans-serif !important;
+        font-family: 'Roboto', Arial, sans-serif !important;
         font-weight: normal;
     }
     </style>
@@ -38,7 +38,7 @@
         removeGuest(i) { if (this.guests.length > 1) this.guests.splice(i, 1); }
     }" class="max-w-2xl mx-auto bg-white p-6 rounded shadow flex flex-col items-center text-center">
         <template x-for="(guest, index) in guests" :key="index">
-            <div class="border border-gray-300 p-4 mb-4 rounded bg-yellow-100 flex flex-col items-center text-center">
+            <div style="background-color: #b1d182;" class="border border-gray-300 p-4 mb-4 rounded flex flex-col items-center text-center">
                 <h3 class="text-lg font-semibold mb-2" style="color:#2B463C;">Invitado #<span x-text="index + 1"></span></h3>
                 <label :for="'fullname_' + index" class="block text-gray-700 mb-1">Nombre completo:</label>
                 <input type="text" :id="'fullname_' + index" :name="'guests[' + index + '][fullname]'" x-model="guest.fullname" required class="w-full px-3 py-2 border border-gray-300 rounded mb-2 text-center">
