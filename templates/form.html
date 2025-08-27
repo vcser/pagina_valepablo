@@ -2,43 +2,74 @@
 <html lang="es">
 <head>
     <title>Formulario de Invitados</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+    @font-face {
+        font-family: 'Hobbiton';
+        src: url('/static/hobbiton.ttf') format('truetype');
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Chomsky';
+        src: url('/static/Chomsky.otf') format('opentype');
+        font-display: swap;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Hobbiton', serif !important;
+        letter-spacing: 0.5px;
+    }
+    body, .font-sans, .text-gray-800, p, td, label, input, button, span, div, li, ul, table {
+        font-family: 'Roboto', Arial, sans-serif !important;
+        font-weight: normal;
+    }
+    </style>
 </head>
-<body>
-    <h2>Confirma tu asistencia y la de tus acompañantes</h2>
+<body class="text-gray-800 font-sans" style="background: url('/static/images/hand-drawn-art-nouveau-frame-borders-ornament-collection.png') center center/cover no-repeat fixed, #f4f1e9;">
+    <div class="container mx-auto px-4 py-8 flex flex-col items-center">
+    <h2 class="text-3xl text-center mb-6 flex items-center justify-center" style="color:#2B463C;">
+    <img src="/static/images/paloma.png" class="w-8 h-8 mr-2" alt="Icono">
+        Confirma tu asistencia y la de tus acompañantes
+    </h2>
     
-    <form method="POST" action="/form" x-data="{ guests: [{}] }">
+    <form method="POST" action="/form" x-data="{
+        guests: [{}],
+        addGuest() { this.guests.push({}); },
+        removeGuest(i) { if (this.guests.length > 1) this.guests.splice(i, 1); }
+    }" class="max-w-2xl mx-auto bg-white p-6 rounded shadow flex flex-col items-center text-center">
         <template x-for="(guest, index) in guests" :key="index">
-            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
-                <h3>Invitado #<span x-text="index + 1"></span></h3>
-                
-                <label :for="'fullname_' + index">Nombre completo:</label><br>
-                <input type="text" :id="'fullname_' + index" :name="'guests[' + index + '][fullname]'"><br>
+            <div style="background-color: #b1d182;" class="border border-gray-300 p-4 mb-4 rounded flex flex-col items-center text-center">
+                <h3 class="text-lg font-semibold mb-2" style="color:#2B463C;">Invitado #<span x-text="index + 1"></span></h3>
+                <label :for="'fullname_' + index" class="block text-gray-700 mb-1">Nombre completo:</label>
+                <input type="text" :id="'fullname_' + index" :name="'guests[' + index + '][fullname]'" x-model="guest.fullname" required class="w-full px-3 py-2 border border-gray-300 rounded mb-2 text-center">
 
-                <label :for="'email_' + index">Email:</label><br>
-                <input type="email" :id="'email_' + index" :name="'guests[' + index + '][email]'"><br>
+                <label :for="'email_' + index" class="block text-gray-700 mb-1">Email:</label>
+                <input type="email" :id="'email_' + index" :name="'guests[' + index + '][email]'" x-model="guest.email" class="w-full px-3 py-2 border border-gray-300 rounded mb-2 text-center">
 
-                <label :for="'phone_' + index">Teléfono:</label><br>
-                <input type="text" :id="'phone_' + index" :name="'guests[' + index + '][phone]'"><br>
+                <label :for="'phone_' + index" class="block text-gray-700 mb-1">Teléfono:</label>
+                <input type="text" :id="'phone_' + index" :name="'guests[' + index + '][phone]'" x-model="guest.phone" class="w-full px-3 py-2 border border-gray-300 rounded mb-2 text-center">
 
-                <label>
-                    <input type="checkbox" :name="'guests[' + index + '][isAdult]'" value="si"> Es adulto
-                </label><br><br>
+                <label class="block text-gray-700 mb-1">
+                    <input type="checkbox" :name="'guests[' + index + '][isAdult]'" value="si" x-model="guest.isAdult" class="mr-2"> Es adulto
+                </label>
 
-                <label :for="'allergies_' + index">¿Alguna alergia alimentaria?</label><br>
-                <input type="text" :id="'allergies_' + index" :name="'guests[' + index + '][allergies]'"><br>
+                <label :for="'allergies_' + index" class="block text-gray-700 mb-1">¿Alguna alergia alimentaria?</label>
+                <input type="text" :id="'allergies_' + index" :name="'guests[' + index + '][allergies]'" x-model="guest.allergies" class="w-full px-3 py-2 border border-gray-300 rounded mb-2 text-center">
 
-                <label :for="'song_' + index">Sugerencia de canción (opcional):</label><br>
-                <input type="text" :id="'song_' + index" :name="'guests[' + index + '][song]'"><br><br>
+                <label :for="'song_' + index" class="block text-gray-700 mb-1">Sugerencia de canción (opcional):</label>
+                <input type="text" :id="'song_' + index" :name="'guests[' + index + '][song]'" x-model="guest.song" class="w-full px-3 py-2 border border-gray-300 rounded mb-2 text-center">
 
-                <button type="button" @click="guests.splice(index, 1)" x-show="guests.length > 1">Eliminar invitado</button>
+                <button type="button" @click="removeGuest(index)" x-show="guests.length > 1" style="background-color:#688F4E; color:#fff; border-radius:0.375rem; padding:0.25rem 0.75rem; margin-top:0.5rem;" onmouseover="this.style.backgroundColor='#4e6b36'" onmouseout="this.style.backgroundColor='#688F4E'">Eliminar invitado</button>
             </div>
         </template>
-
-        <button type="button" @click="guests.push({})" style="margin-top: 10px;">Agregar otro invitado</button><br><br>
-
-        <button type="submit">Enviar confirmación</button>
+    <button type="button" @click="addGuest()" style="background-color:#688F4E; color:#fff; border-radius:0.375rem; padding:0.5rem 1rem; margin-top:0.5rem;" onmouseover="this.style.backgroundColor='#4e6b36'" onmouseout="this.style.backgroundColor='#688F4E'">Agregar otro invitado</button>
+        <br><br>
+    <button type="submit" class="w-full" style="background-color:#688F4E; color:#fff; border-radius:0.375rem; padding-top:0.5rem; padding-bottom:0.5rem;" onmouseover="this.style.backgroundColor='#4e6b36'" onmouseout="this.style.backgroundColor='#688F4E'">Enviar confirmación</button>
     </form>
+    </div>
 </body>
+<img src="/static/images/abajoizq.png" style="position:fixed; left:0; bottom:0; width:120px; height:auto; z-index:50; pointer-events:none;" alt="Decoración esquina inferior izquierda">
+<img src="/static/images/abajoder.png" style="position:fixed; right:0; bottom:0; width:120px; height:auto; z-index:50; pointer-events:none;" alt="Decoración esquina inferior derecha">
+<img src="/static/images/arribaizq.png" style="position:fixed; left:0; top:0; width:120px; height:auto; z-index:50; pointer-events:none;" alt="Decoración esquina superior izquierda">
+<img src="/static/images/arribader.png" style="position:fixed; right:0; top:0; width:120px; height:auto; z-index:50; pointer-events:none;" alt="Decoración esquina superior derecha">
 </html>

@@ -1,15 +1,42 @@
-{{define "mensaje.html"}}
-<head>
-    <title>...existing title...</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
-</head>
-<div>
-    <h2>Mensaje</h2>
-    <p>Puedes dejarnos un mensaje con buenos deseos:</p>
-    <form method="POST" action="/regalo">
-        <textarea name="message" rows="4" cols="50" placeholder="Escribe tu mensaje aquí..."></textarea><br>
-        <button type="submit">Enviar mensaje</button>
-    </form>
-    <p>¡Muchas gracias!</p>
+<style>
+@font-face {
+    font-family: 'Hobbiton';
+    src: url('/static/hobbiton.ttf') format('truetype');
+    font-display: swap;
+}
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+@font-face {
+    font-family: 'Chomsky';
+    src: url('/static/Chomsky.otf') format('opentype');
+    font-display: swap;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Hobbiton', serif !important;
+    letter-spacing: 0.5px;
+}
+body, .font-sans, .text-gray-800, p, td, label, input, button, span, div, li, ul, table {
+    font-family: 'Roboto', Arial, sans-serif !important;
+    font-weight: normal;
+}
+body {
+    background: url('/static/images/hand-drawn-art-nouveau-frame-borders-ornament-collection.png') center center/cover no-repeat fixed, #f4f1e9 !important;
+}
+</style>
+<div class="max-w-xl mx-auto bg-white p-6 rounded shadow mb-4 flex flex-col items-center text-center">
+    <h2 class="text-xl font-bold mb-2" style="color:#2B463C;">Mensaje</h2>
+    <p class="mb-4">Puedes dejarnos un mensaje con buenos deseos:</p>
+    {{if .Message}}
+        <p class="font-semibold mb-2">Tu mensaje enviado:</p>
+    <div class="border border-green-300 p-4 mb-4 rounded" style="background-color:#B1D182; color:#2B463C;">{{.Message}}</div>
+    {{else}}
+        <form method="POST" action="/text" class="flex flex-col items-center text-center w-full">
+            <textarea name="message" rows="4" class="w-full border border-gray-300 rounded p-2 mb-2 text-center" placeholder="Escribe tu mensaje aquí..."></textarea>
+            <button type="submit" style="background-color:#688F4E; color:#fff; border-radius:0.375rem; padding:0.5rem 1rem;" onmouseover="this.style.backgroundColor='#4e6b36'" onmouseout="this.style.backgroundColor='#688F4E'">Enviar mensaje</button>
+        </form>
+    {{end}}
+    <p class="mt-4">¡Muchas gracias!</p>
 </div>
-{{end}}
+<img src="/static/images/abajoizq.png" style="position:fixed; left:0; bottom:0; width:120px; height:auto; z-index:50; pointer-events:none;" alt="Decoración esquina inferior izquierda">
+<img src="/static/images/abajoder.png" style="position:fixed; right:0; bottom:0; width:120px; height:auto; z-index:50; pointer-events:none;" alt="Decoración esquina inferior derecha">
+<img src="/static/images/arribaizq.png" style="position:fixed; left:0; top:0; width:120px; height:auto; z-index:50; pointer-events:none;" alt="Decoración esquina superior izquierda">
+<img src="/static/images/arribader.png" style="position:fixed; right:0; top:0; width:120px; height:auto; z-index:50; pointer-events:none;" alt="Decoración esquina superior derecha">
