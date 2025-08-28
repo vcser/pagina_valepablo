@@ -1,26 +1,33 @@
-FROM golang:1.22-alpine AS builder
+# Etapa de construcción
+FROM golang:1.24-alpine AS builder
 
 WORKDIR /app
 
-# Copiar go.mod y go.sum primero (cache de dependencias)
+# Copiar dependencias
 COPY go.mod ./
 RUN go mod download
 
-# Copiar el resto del código
+# Copiar todo el código, templates y static
 COPY . .
 
 # Compilar binario
 RUN go build -o server .
 
-# Imagen final
+# Imagen final mínima
 FROM alpine:3.19
 
 WORKDIR /app
 
-# Crear volumen para archivos estáticos
-VOLUME ["/app"]
+# ⚡ NO montar volumen en /app para no borrar templates/static
+# VOLUMES pueden ir solo si quieres persistir subcarpetas de datos generados
+# VOLUME ["/app/data"]
 
+# Copiar binario
 COPY --from=builder /app/server /app/server
+
+# Copiar templates y static
+COPY --from=builder /app/templates /app/templates
+COPY --from=builder /app/static /app/static
 
 EXPOSE 8081
 
