@@ -340,6 +340,9 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 			email := r.FormValue(fmt.Sprintf("guests[%d][email]", i))
 			phone := r.FormValue(fmt.Sprintf("guests[%d][phone]", i))
 			isAdult := r.FormValue(fmt.Sprintf("guests[%d][isAdult]", i))
+			if isAdult != "si" {
+				isAdult = "no"
+			}
 			allergies := r.FormValue(fmt.Sprintf("guests[%d][allergies]", i))
 			song := r.FormValue(fmt.Sprintf("guests[%d][song]", i))
 			if fullname == "" {
